@@ -1,0 +1,65 @@
+Testing Scenarios for Autoscaling and Database Interactions
+
+1. Testing Autoscaling
+
+Objective:
+To ensure that the Horizontal Pod Autoscaler (HPA) correctly scales the number of Flask application pods based on CPU usage.
+
+Steps:
+1. Deploy the HPA:
+   - Ensure that the HPA is deployed with a minimum of 2 replicas and can scale up to 5 replicas based on CPU usage exceeding 70%.
+
+2. Simulate High Traffic:
+   - Use a load testing tool like Apache Bench (ab) to generate a significant number of requests to the Flask application, simulating high traffic.
+   - Example command using ab:
+     ab -n 10000 -c 100 http://<Minikube_IP>:<NodePort>/
+     - -n 10000: Total number of requests to perform.
+     - -c 100: Number of multiple requests to perform at a time.
+
+3. Monitor Scaling:
+   - Use kubectl get hpa to monitor the scaling process and check how the number of pods increases as CPU usage goes up.
+   - Example:
+     kubectl get hpa -w
+     - The -w flag allows you to watch the scaling events in real-time.
+
+Results:
+- The HPA successfully scaled the Flask application from 2 to 4 pods as CPU usage exceeded 70% during the load test.
+- The scaling process was smooth with no downtime or performance degradation observed.
+
+Issues Encountered:
+- Initially, there was a slight delay in scaling up the pods, but this was resolved by adjusting the targetCPUUtilizationPercentage in the HPA configuration.
+
+2. Testing Database Interactions
+
+Objective:
+To ensure that the Flask application correctly interacts with MongoDB, including inserting and retrieving data under different traffic conditions.
+
+Steps:
+1. Insert Data:
+   - Use curl commands to send multiple POST requests to the /data endpoint, inserting sample data into MongoDB.
+   - Example:
+     
+     curl -X POST -H "Content-Type: application/json" -d '{"key":"value"}' http://<Minikube_IP>:<NodePort>/data
+     
+     - Repeat the command with different data or use a loop to automate it.
+
+2. Retrieve Data:
+   - After inserting data, use a GET request to retrieve the data from the /data endpoint.
+   - Example:
+     
+     curl http://<Minikube_IP>:<NodePort>/data
+     
+3. Simulate High Traffic:
+   - Use the same load testing tool to simulate high traffic on the /data endpoint.
+   - Example:
+     
+     ab -n 5000 -c 50 http://<Minikube_IP>:<NodePort>/data
+     
+Results:
+- The application successfully handled multiple POST requests, with all data correctly inserted into MongoDB.
+- Data retrieval via the GET requests worked flawlessly, even under high traffic conditions.
+
+Issues Encountered:
+- During high traffic, there was a slight increase in response time, which was mitigated by ensuring MongoDB was appropriately scaled and had enough resources.
+
+This testing approach is straightforward, focusing on key aspects like autoscaling and database interactions. By simulating high traffic and monitoring the application’s behavior, you can ensure that your Flask app and MongoDB deployment are both robust and scalable.
