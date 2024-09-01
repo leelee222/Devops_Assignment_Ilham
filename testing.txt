@@ -61,5 +61,3 @@ Results:
 
 Issues Encountered:
 - During high traffic, there was a slight increase in response time, which was mitigated by ensuring MongoDB was appropriately scaled and had enough resources.
-
-This testing approach is straightforward, focusing on key aspects like autoscaling and database interactions. By simulating high traffic and monitoring the application’s behavior, you can ensure that your Flask app and MongoDB deployment are both robust and scalable.
