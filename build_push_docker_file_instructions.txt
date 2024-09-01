@@ -1,0 +1,7 @@
+Build and Push the Docker Image:
+
+Build the Docker image:
+docker build -t your-dockerhub-username/flask-mongodb-app .
+
+Push the image to Docker Hub:
+docker push your-dockerhub-username/flask-mongodb-app

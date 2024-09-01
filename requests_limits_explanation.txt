@@ -1,0 +1,23 @@
+Resource Requests and Limits in Kubernetes help manage the resources (CPU and memory) that containers use.
+
+Resource Requests: This specifies the minimum amount of CPU and memory that a container needs. Kubernetes uses this to schedule pods on nodes that have enough resources available. For example, if a container requests 500m CPU and 512Mi memory, Kubernetes will ensure that the pod is scheduled on a node with at least these resources available.
+
+Resource Limits: This specifies the maximum amount of CPU and memory a container can use. If a container tries to exceed its limit, it may be throttled (for CPU) or terminated and restarted (for memory). For example, if a container has a limit of 1 CPU and 1Gi memory, it can use up to this amount, but no more.
+
+Why Resource Requests and Limits Are Important:
+
+Stability: Ensures that each container gets the resources it needs and prevents any single container from consuming all the resources.
+Fairness: Helps distribute resources evenly among containers and services.
+Predictability: Helps in better planning and management of node resources.
+Design Choices and Configurations
+1. Service Discovery and DNS:
+Choice: Use Kubernetes DNS for service discovery. This is a built-in feature that simplifies inter-pod communication using service names.
+Alternative: Manually manage IP addresses or use external service discovery tools. This would be more complex and less scalable compared to the built-in Kubernetes DNS.
+
+2. Connecting Flask to MongoDB:
+Choice: Use a Kubernetes Service for MongoDB and configure Flask to connect using the service name.
+Alternative: Directly connect using MongoDB’s pod IP. This approach is less flexible and resilient, as pod IPs can change if pods are restarted.
+
+3. Resource Requests and Limits:
+Choice: Define appropriate resource requests and limits for both Flask and MongoDB pods to ensure stability and efficient resource utilization.
+Alternative: Not specifying these settings could lead to resource contention and unstable performance.

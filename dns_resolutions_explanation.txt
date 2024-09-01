@@ -1,0 +1,27 @@
+DNS Resolution:
+Explanation of DNS Resolution:
+Explain how DNS resolution works within the Kubernetes cluster for inter-pod communication. Describe how to
+configure the connection from the Flask application to the MongoDB database within the Kubernetes cluster.
+
+Answer:
+In a Kubernetes cluster, DNS resolution helps pods find each other by name. Here’s a simple explanation of how it works:
+
+1. DNS Service in Kubernetes: Kubernetes uses a DNS service to resolve pod names to their IP addresses. This service runs within the cluster and provides a way to lookup pod addresses using names.
+
+2. Service Discovery: Each pod in a Kubernetes cluster can access other services by using a DNS name. Kubernetes creates a DNS entry for each service, which pods use to communicate.
+
+3. How DNS Resolution Works:
+   - Pod Names: When a pod wants to communicate with another pod, it uses the service name.
+   - Service Name Resolution: The DNS service resolves this service name to the IP addresses of the pods backing that service.
+
+Configuring Connection from Flask to MongoDB in Kubernetes:
+
+1. Create a MongoDB Service: Define a Kubernetes service for MongoDB. This service will have a stable name that Flask can use to connect to MongoDB.
+
+2. Connect Flask to MongoDB:
+   - Update Flask Configuration: In your Flask application, configure the MongoDB connection using the service name created. For example, if your MongoDB service is named `mongodb-service`, you’ll use `mongodb-service` as the hostname in your connection string.
+   - Connection String Example: `mongodb://mongodb-service:27017` where `mongodb-service` is the DNS name of the MongoDB service and `27017` is the default MongoDB port.
+
+3. Deploy and Test: Apply these configurations and deploy your Flask application in the cluster. Test the connection to ensure Flask can communicate with MongoDB using the service name.
+
+This setup ensures that your Flask application can reliably connect to MongoDB using DNS within the Kubernetes cluster.
